@@ -69,7 +69,7 @@ public class Field extends Actor {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (state[i][j].alive && aliveNeighbors(state,i,j) < 2) {
-                    System.out.println("two or three neighbors");
+                    System.out.println("less than two neighbors");
                     field[i][j].alive =false;
                 }
                 if ((state[i][j].alive && aliveNeighbors(state,i,j) == 2) ||
@@ -78,9 +78,12 @@ public class Field extends Actor {
                     field[i][j].alive = true;
                 }
                 if ((state[i][j].alive && aliveNeighbors(state,i,j)  > 3)) {
+                    System.out.println("more than three neighbors");
+
                     field[i][j].alive = false;
                 }
                 if(!state[i][j].alive && aliveNeighbors(state,i,j) == 3){
+                    System.out.println("exactly three neighbors");
                     field[i][j].alive = true;
                 }
             }
