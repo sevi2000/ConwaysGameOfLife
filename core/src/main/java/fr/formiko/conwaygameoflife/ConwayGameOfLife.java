@@ -44,6 +44,9 @@ public class ConwayGameOfLife extends ApplicationAdapter {
 
     @Override
     public void render() {
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            Gdx.app.exit();
+        }
         Gdx.gl.glClearColor(1, 1, 1, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
