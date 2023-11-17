@@ -2,6 +2,7 @@ package fr.formiko.conwaygameoflife;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,16 +18,16 @@ public class ConwayGameOfLife extends ApplicationAdapter {
     private Texture image;
     private Stage stage;
     private Field f;
+    boolean evolve = false;
+
+
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
         stage = new Stage();
-        f = new Field(15,12);
-        f.field[1][0].birth();
-        f.field[1][1].birth();
-        f.field[1][2].birth();
+        f = new Field(30,30);
         stage.addActor(f);
         for (int i = 0; i < f.field.length; i++) {
             for (int j = 0; j < f.field[i].length; j++) {
@@ -36,7 +37,9 @@ public class ConwayGameOfLife extends ApplicationAdapter {
         System.out.println();
         //System.out.println(Arrays.toString(f.field));
 
+        //f.evolve();
         Gdx.input.setInputProcessor(stage);
+
     }
 
     @Override
@@ -46,8 +49,9 @@ public class ConwayGameOfLife extends ApplicationAdapter {
         stage.act();
         stage.draw();
         f.evolve();
+        }
 
-    }
+
 
     @Override
     public void dispose() {

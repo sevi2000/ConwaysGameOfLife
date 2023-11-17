@@ -12,7 +12,8 @@ public class Lwjgl3Launcher {
     }
 
     private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new ConwayGameOfLife(), getDefaultConfiguration());
+        ConwayGameOfLife cof = new ConwayGameOfLife();
+        return new Lwjgl3Application(cof, getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
@@ -20,11 +21,11 @@ public class Lwjgl3Launcher {
         configuration.setTitle("ConwayGameOfLife");
         configuration.useVsync(true);
         //// Limits FPS to the refresh rate of the currently active monitor.
-        configuration.setForegroundFPS(3);
+        configuration.setForegroundFPS(0);
         //// If you remove the above line and set Vsync to false, you can get unlimited FPS, which can be
         //// useful for testing performance, but can also be very stressful to some hardware.
         //// You may also need to configure GPU drivers to fully disable Vsync; this can cause screen tearing.
-        configuration.setWindowedMode(640, 480);
+        configuration.setWindowedMode(30*20, 30*20);
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
         return configuration;
     }

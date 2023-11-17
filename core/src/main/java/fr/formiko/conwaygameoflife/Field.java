@@ -10,12 +10,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+
 public class Field extends Actor {
     Cell [][] field;
     int width;
     int height;
     boolean evolve = false;
     private static ShapeDrawer schd = null;
+    private long timeForNextMove;
+    private static final long TIME_FOR_NEXT_MOVE_MAX = 1000;
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -50,60 +53,78 @@ public class Field extends Actor {
         this.field = new Cell[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                field[i][j] = new Cell((int)getX()+ i * 40,(int)getY()+ j*40);
+                field[i][j] = new Cell((int)getX()+ i * 20,(int)getY()+ j*20);
             }
         }
     }
     public void evolve(){
+        System.out.println("alive : " + field[0][0].alive);
+        System.out.println("BEGIN EVOLVE");
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            evolve = true;
+            evolve = !evolve;
             System.out.println("space pressed");
         }
         if (!evolve){return;}
         Cell [][] state = new Cell[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                state[i][j] = field[i][j];
+                state[i][j] = Cell.getCellFromCell(field[i][j]);
             }
         }
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                if (state[i][j].alive && aliveNeighbors(state,i,j) < 2) {
-                    System.out.println("less than two neighbors");
-                    field[i][j].alive =false;
-                }
-                if ((state[i][j].alive && aliveNeighbors(state,i,j) == 2) ||
-                    (state[i][j].alive && aliveNeighbors(state,i,j) == 3)) {
-                    System.out.println("two or three neighbors");
-                    field[i][j].alive = true;
-                }
-                if ((state[i][j].alive && aliveNeighbors(state,i,j)  > 3)) {
-                    System.out.println("more than three neighbors");
+        timeForNextMove += Gdx.graphics.getDeltaTime() * 1000;
+        if (timeForNextMove > TIME_FOR_NEXT_MOVE_MAX) {
+            timeForNextMove -= TIME_FOR_NEXT_MOVE_MAX;
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    boolean alive = state[i][j].alive;
+                    if (alive && aliveNeighbors(state, i, j) < 2) {
+                        System.out.println("less than two neighbors");
+                        field[i][j].alive = false;
+                    }
+                    if (alive && (aliveNeighbors(state, i, j) == 2 || aliveNeighbors(state, i, j) == 3)) {
+                        System.out.println("two or three neighbors");
+                        field[i][j].alive = true;
+                    }
+                    if (alive && aliveNeighbors(state, i, j) > 3) {
+                        System.out.println("more than three neighbors");
 
-                    field[i][j].alive = false;
+                        field[i][j].alive = false;
+                    }
+                    if (!alive && aliveNeighbors(state, i, j) == 3) {
+                        field[i][j].alive = true;
+                    }
                 }
-                if(!state[i][j].alive && aliveNeighbors(state,i,j) == 3){
-                    System.out.println("exactly three neighbors");
-                    field[i][j].alive = true;
-                }
+
             }
-
+            System.out.println("END EVOLVE");
         }
     }
     public int aliveNeighbors(Cell[][] state,int i, int j) {
         int cpt = 0;
         try {
             if (state[i - 1][j].alive) cpt++;
-            if (state[i + 1][j].alive)cpt++;
-            if (state[i][j + 1].alive)cpt++;
-            if (state[i][j - 1].alive)cpt++;
-            if (state[i - 1][j - 1].alive) cpt++;
-            if (state[i - 1][j + 1].alive) cpt++;
-            if (state[i + 1][j - 1].alive) cpt++;
-            if (state[i + 1][j + 1].alive) cpt++;
         } catch (ArrayIndexOutOfBoundsException e){}
-
-
+        try {
+            if (state[i + 1][j].alive)cpt++;
+        } catch (ArrayIndexOutOfBoundsException e){}
+        try{
+        if (state[i][j + 1].alive)cpt++;
+        } catch (ArrayIndexOutOfBoundsException e){}
+        try{
+            if (state[i][j - 1].alive)cpt++;
+        } catch (ArrayIndexOutOfBoundsException e){}
+        try {
+            if (state[i - 1][j - 1].alive) cpt++;
+        } catch (ArrayIndexOutOfBoundsException e){}
+        try {
+            if (state[i - 1][j + 1].alive) cpt++;
+        }catch (ArrayIndexOutOfBoundsException e){}
+        try {
+            if (state[i + 1][j - 1].alive) cpt++;
+        }catch (ArrayIndexOutOfBoundsException e){}
+        try {
+            if (state[i + 1][j + 1].alive) cpt++;
+        }catch (ArrayIndexOutOfBoundsException e){}
         return cpt;
     }
 }

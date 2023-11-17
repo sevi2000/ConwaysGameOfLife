@@ -10,7 +10,7 @@ public class Cell extends Actor {
     Cell(int x,int y){
         super();
         setPosition(x,y);
-        setSize(40,40);
+        setSize(20,20);
         alive = false;
         addListener( new ClickListener() {
             @Override
@@ -27,5 +27,9 @@ public class Cell extends Actor {
     void birth(){
         alive = true;
     }
-
+    public static Cell getCellFromCell(Cell cell) {
+        Cell c = new Cell((int)cell.getX(),(int)cell.getY());
+        c.alive = cell.alive;
+        return c;
+    }
 }
