@@ -18,7 +18,7 @@ public class Field extends Actor {
     boolean evolve = false;
     private static ShapeDrawer schd = null;
     private long timeForNextMove;
-    private static final long TIME_FOR_NEXT_MOVE_MAX = 1000;
+    private static final long TIME_FOR_NEXT_MOVE_MAX = 250;
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -53,7 +53,7 @@ public class Field extends Actor {
         this.field = new Cell[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                field[i][j] = new Cell((int)getX()+ i * 20,(int)getY()+ j*20);
+                field[i][j] = new Cell((int)getX()+ i * Cell.CELL_SIZE,(int)getY()+ j*Cell.CELL_SIZE);
             }
         }
     }

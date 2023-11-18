@@ -7,10 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Cell extends Actor {
     boolean alive;
+    public static int CELL_SIZE = 20;
     Cell(int x,int y){
         super();
         setPosition(x,y);
-        setSize(20,20);
+        setSize(CELL_SIZE,CELL_SIZE);
         alive = false;
         addListener( new ClickListener() {
             @Override
