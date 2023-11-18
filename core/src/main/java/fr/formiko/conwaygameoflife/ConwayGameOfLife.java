@@ -27,7 +27,7 @@ public class ConwayGameOfLife extends ApplicationAdapter {
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
         stage = new Stage();
-        f = new Field(Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()/20);
+        f = new Field(Gdx.graphics.getWidth()/Cell.CELL_SIZE,Gdx.graphics.getHeight()/Cell.CELL_SIZE);
         stage.addActor(f);
         for (int i = 0; i < f.field.length; i++) {
             for (int j = 0; j < f.field[i].length; j++) {
