@@ -105,8 +105,12 @@ public class Field extends Actor {
 
             }
             System.out.println("END EVOLVE");
+            if (areArraysEquals(state,field)){
+                evolve = false;
+            }
+            generatons++;
         }
-        generatons++;
+
     }
     public int aliveNeighbors(Cell[][] state,int i, int j) {
         int cpt = 0;
@@ -135,5 +139,14 @@ public class Field extends Actor {
             if (state[i + 1][j + 1].alive) cpt++;
         }catch (ArrayIndexOutOfBoundsException e){}
         return cpt;
+    }
+    private boolean areArraysEquals(Cell[][] state, Cell [][] field) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (state[i][j].alive != field[i][j].alive)
+                    return false;
+            }
+        }
+        return true;
     }
 }
