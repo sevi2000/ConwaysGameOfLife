@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -19,6 +20,8 @@ public class Field extends Actor {
     private static ShapeDrawer schd = null;
     private long timeForNextMove;
     private static final long TIME_FOR_NEXT_MOVE_MAX = 250;
+    private int generatons;
+    BitmapFont font = new BitmapFont();
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
@@ -35,6 +38,7 @@ public class Field extends Actor {
                 }
             }
         }
+        font.draw(batch, "Generation : " + generatons, 10, Gdx.graphics.getHeight() - 10);
     }
     public static ShapeDrawer createShapeDrawer(Batch batch) {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -56,6 +60,10 @@ public class Field extends Actor {
                 field[i][j] = new Cell((int)getX()+ i * Cell.CELL_SIZE,(int)getY()+ j*Cell.CELL_SIZE);
             }
         }
+        this.generatons = 0;
+        font.setColor(Color.RED);
+        int newSize = 20; // Change this to the desired font size
+        font.getData().setScale(newSize / font.getCapHeight());
     }
     public void evolve(){
         System.out.println("alive : " + field[0][0].alive);
@@ -98,6 +106,7 @@ public class Field extends Actor {
             }
             System.out.println("END EVOLVE");
         }
+        generatons++;
     }
     public int aliveNeighbors(Cell[][] state,int i, int j) {
         int cpt = 0;
