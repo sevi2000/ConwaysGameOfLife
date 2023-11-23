@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -28,17 +29,23 @@ public class ConwayGameOfLife extends ApplicationAdapter {
         image = new Texture("libgdx.png");
         stage = new Stage();
         f = new Field(Gdx.graphics.getWidth()/Cell.CELL_SIZE,Gdx.graphics.getHeight()/Cell.CELL_SIZE);
-        stage.addActor(f);
-        for (int i = 0; i < f.field.length; i++) {
-            for (int j = 0; j < f.field[i].length; j++) {
-             stage.addActor(f.field[i][j]);
-            }
-        }
+
         System.out.println();
         //System.out.println(Arrays.toString(f.field));
 
         //f.evolve();
         Gdx.input.setInputProcessor(stage);
+        try {
+            f = Field.fromFile(Gdx.files.internal("carpet.txt").file());
+            stage.addActor(f);
+            for (int i = 0; i < f.field.length; i++) {
+                for (int j = 0; j < f.field[i].length; j++) {
+                    stage.addActor(f.field[i][j]);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

@@ -21,6 +21,10 @@ public class Cell extends Actor {
             };
         });
     }
+    Cell(int x,int y,boolean alive){
+        this(x,y);
+        this.alive = alive;
+    }
     void kill(){
         alive = false;
     }

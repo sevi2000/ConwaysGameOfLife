@@ -11,6 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+
 
 public class Field extends Actor {
     Cell [][] field;
@@ -66,8 +71,6 @@ public class Field extends Actor {
         font.getData().setScale(newSize / font.getCapHeight());
     }
     public void evolve(){
-        System.out.println("alive : " + field[0][0].alive);
-        System.out.println("BEGIN EVOLVE");
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             evolve = !evolve;
             System.out.println("space pressed");
@@ -86,15 +89,12 @@ public class Field extends Actor {
                 for (int j = 0; j < height; j++) {
                     boolean alive = state[i][j].alive;
                     if (alive && aliveNeighbors(state, i, j) < 2) {
-                        System.out.println("less than two neighbors");
                         field[i][j].alive = false;
                     }
                     if (alive && (aliveNeighbors(state, i, j) == 2 || aliveNeighbors(state, i, j) == 3)) {
-                        System.out.println("two or three neighbors");
                         field[i][j].alive = true;
                     }
                     if (alive && aliveNeighbors(state, i, j) > 3) {
-                        System.out.println("more than three neighbors");
 
                         field[i][j].alive = false;
                     }
@@ -104,7 +104,6 @@ public class Field extends Actor {
                 }
 
             }
-            System.out.println("END EVOLVE");
             if (areArraysEquals(state,field)){
                 evolve = false;
             }
@@ -148,5 +147,21 @@ public class Field extends Actor {
             }
         }
         return true;
+    }
+
+    public static Field fromFile(File file) throws IOException {
+        List<String> lines = Files.readAllLines(file.toPath());
+        Field f = new Field(Gdx.graphics.getWidth()/Cell.CELL_SIZE,Gdx.graphics.getHeight()/Cell.CELL_SIZE);
+        int i = 0;
+        for(String line : lines){
+            System.out.println(line);
+            String [] cells = line.split(" ");
+            for (int j = 0; j < cells.length; j++) {
+                boolean alive = (cells[j].charAt(0) == '1');
+                f.field[i][j] = new Cell(i * Cell.CELL_SIZE, j*Cell.CELL_SIZE,alive);
+            }
+            i++;
+        }
+        return f;
     }
 }
