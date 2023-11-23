@@ -157,7 +157,7 @@ public class Field extends Actor {
             System.out.println(line);
             String [] cells = line.split(" ");
             for (int j = 0; j < cells.length; j++) {
-                boolean alive = (cells[j].charAt(0) == '1');
+                boolean alive = (cells[j].charAt(0) == '#');
                 f.field[i][j] = new Cell(i * Cell.CELL_SIZE, j*Cell.CELL_SIZE,alive);
             }
             i++;
