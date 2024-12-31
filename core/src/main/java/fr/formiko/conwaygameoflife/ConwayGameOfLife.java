@@ -31,12 +31,12 @@ public class ConwayGameOfLife extends ApplicationAdapter {
         f = new Field(Gdx.graphics.getWidth()/Cell.CELL_SIZE,Gdx.graphics.getHeight()/Cell.CELL_SIZE);
 
         System.out.println();
-        //System.out.println(Arrays.toString(f.field));
+
 
         //f.evolve();
         Gdx.input.setInputProcessor(stage);
         try {
-            f = Field.fromFile(Gdx.files.internal("carpet.txt").file());
+            f = Field.fromFile(Gdx.files.internal("chatgpt_carpet.txt").file());
             stage.addActor(f);
             for (int i = 0; i < f.field.length; i++) {
                 for (int j = 0; j < f.field[i].length; j++) {
